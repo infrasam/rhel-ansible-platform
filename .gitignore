@@ -1,0 +1,15 @@
+*.retry
+collections/ansible_collections/
+.vault_pass
+*.vault
+__pycache__/
+*.pyc
+.venv/
+venv/
+.vscode/
+.idea/
+*.swp
+.DS_Store
+*.pem
+*.key
+secrets/
