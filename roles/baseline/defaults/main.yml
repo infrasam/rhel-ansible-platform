@@ -1,0 +1,21 @@
+---
+# Default variables for the baseline role.
+# Override these in inventory group_vars/host_vars as needed.
+
+baseline_timezone: Europe/Stockholm
+
+baseline_ntp_servers:
+  - 0.se.pool.ntp.org
+  - 1.se.pool.ntp.org
+  - 2.se.pool.ntp.org
+
+# /etc/hosts entries — list of dicts with ip and names
+baseline_etc_hosts:
+  - ip: 192.168.1.240
+    names:
+      - rhel-ctrl.lab.local
+      - rhel-ctrl
+  - ip: 192.168.1.216
+    names:
+      - rhel-node1.lab.local
+      - rhel-node1

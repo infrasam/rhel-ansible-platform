@@ -1,0 +1,45 @@
+---
+# Baseline role: hostname, /etc/hosts, timezone, chrony
+
+- name: Set system hostname
+  ansible.builtin.hostname:
+    name: "{{ inventory_hostname }}.lab.local"
+  tags: [baseline, hostname]
+
+- name: Configure /etc/hosts entries
+  ansible.builtin.lineinfile:
+    path: /etc/hosts
+    regexp: "^{{ item.ip }}\\s"
+    line: "{{ item.ip }}   {{ item.names | join(' ') }}"
+    state: present
+  loop: "{{ baseline_etc_hosts }}"
+  tags: [baseline, hosts]
+
+- name: Set system timezone
+  community.general.timezone:
+    name: "{{ baseline_timezone }}"
+  tags: [baseline, timezone]
+
+- name: Ensure chrony is installed
+  ansible.builtin.dnf:
+    name: chrony
+    state: present
+  tags: [baseline, chrony]
+
+- name: Configure chrony pools
+  ansible.builtin.blockinfile:
+    path: /etc/chrony.conf
+    marker: "# {mark} ANSIBLE MANAGED NTP POOLS"
+    block: |
+      {% for server in baseline_ntp_servers %}
+      pool {{ server }} iburst
+      {% endfor %}
+  notify: Restart chronyd
+  tags: [baseline, chrony]
+
+- name: Ensure chronyd is enabled and running
+  ansible.builtin.service:
+    name: chronyd
+    enabled: true
+    state: started
+  tags: [baseline, chrony]
