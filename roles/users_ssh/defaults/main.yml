@@ -1,0 +1,8 @@
+---
+# Default — kan överridas per grupp/host
+
+ssh_allowed_users:
+  - ansible
+
+ansible_user_name: ansible
+ansible_user_comment: "Ansible automation account"

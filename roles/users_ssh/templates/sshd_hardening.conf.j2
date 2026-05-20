@@ -1,0 +1,15 @@
+# {{ ansible_managed }}
+# Enterprise SSH hardening
+
+PermitRootLogin no
+PasswordAuthentication no
+PermitEmptyPasswords no
+KbdInteractiveAuthentication no
+PubkeyAuthentication yes
+
+AllowUsers {{ ssh_allowed_users | join(' ') }}
+
+MaxAuthTries 3
+LoginGraceTime 30
+ClientAliveInterval 300
+ClientAliveCountMax 2

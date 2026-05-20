@@ -1,0 +1,6 @@
+---
+- name: Configure users and SSH hardening
+  hosts: all
+  become: true
+  roles:
+    - users_ssh
