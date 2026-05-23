@@ -1,0 +1,7 @@
+---
+firewall_default_zone: public
+firewall_services:
+  - ssh
+firewall_remove_services:
+  - dhcpv6-client
+

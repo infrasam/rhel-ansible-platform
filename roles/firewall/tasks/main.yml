@@ -1,0 +1,34 @@
+---
+- name: Ensure firewalld is installed
+  ansible.builtin.dnf:
+    name: firewalld
+    state: present
+
+- name: Ensure firewalld is enabled and running
+  ansible.builtin.service:
+    name: firewalld
+    enabled: true
+    state: started
+
+- name: Set default zone
+  ansible.builtin.command: firewall-cmd --set-default-zone={{ firewall_default_zone }}
+  register: zone_result
+  changed_when: "'ZONE_ALREADY_SET' not in zone_result.stderr"
+
+- name: Allow required services
+  ansible.posix.firewalld:
+    zone: "{{ firewall_default_zone }}"
+    service: "{{ item }}"
+    state: enabled
+    permanent: true
+    immediate: true
+  loop: "{{ firewall_services }}"
+
+- name: Remove unwanted services
+  ansible.posix.firewalld:
+    zone: "{{ firewall_default_zone }}"
+    service: "{{ item }}"
+    state: disabled
+    permanent: true
+    immediate: true
+  loop: "{{ firewall_remove_services }}"
