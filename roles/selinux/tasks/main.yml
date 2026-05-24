@@ -13,7 +13,7 @@
   register: selinux_result
 
 - name: Notify if a reboot is required
-  ansible.buildin.debug:
+  ansible.builtin.debug:
     msg: "SELinux change requires a reboot to fully apply."
   when: selinux_result.reboot_required | default(false)
 
