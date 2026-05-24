@@ -1,0 +1,19 @@
+---
+- name: Ensure SELinux policy packages are installed
+  ansible.builtin.dnf:
+    name:
+      - libselinux-utils
+      - policycoreutils
+    state: present
+
+- name: Ensure SELinux is configured
+  ansible.posix.selinux:
+    state: "{{ selinux_state }}"
+    policy: "{{ selinux_policy }}"
+  register: selinux_result
+
+- name: Notify if a reboot is required
+  ansible.buildin.debug:
+    msg: "SELinux change requires a reboot to fully apply."
+  when: selinux_result.reboot_required | default(false)
+
