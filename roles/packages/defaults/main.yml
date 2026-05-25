@@ -11,3 +11,5 @@ dnf_automatic_upgrade_type: security
 dnf_automatic_download: "yes"
 dnf_automatic_apply: "yes"
 dnf_automatic_emit_via: stdio
+
+packages_disable_gpg_check: true
