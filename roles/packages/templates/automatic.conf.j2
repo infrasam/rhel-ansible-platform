@@ -1,0 +1,12 @@
+[commands]
+upgrade_type = {{ dnf_automatic_upgrade_type }}
+random_sleep = 0
+network_online_timeout = 60
+download_updates = {{ dnf_automatic_download }}
+apply_updates = {{ dnf_automatic_apply }}
+
+[emitters]
+emit_via = {{ dnf_automatic_emit_via }}
+
+[base]
+debuglevel = 1

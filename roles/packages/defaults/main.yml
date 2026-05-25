@@ -1,0 +1,13 @@
+---
+packages_baseline:
+  - vim
+  - git
+  - tmux
+  - bind-utils
+  - tcpdump
+  - bash-completion
+
+dnf_automatic_upgrade_type: security
+dnf_automatic_download: "yes"
+dnf_automatic_apply: "yes"
+dnf_automatic_emit_via: stdio

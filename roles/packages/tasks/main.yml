@@ -1,0 +1,29 @@
+---
+- name: Install baseline packages
+  ansible.builtin.dnf:
+    name: "{{ packages_baseline }}"
+    state: present
+  tags: [packages, baseline]
+
+- name: Install dnf-automatic
+  ansible.builtin.dnf:
+    name: dnf-automatic
+    state: present
+  tags: [packages, automatic]
+
+- name: Configure dnf-automatic
+  ansible.builtin.template:
+    src: automatic.conf.j2
+    dest: /etc/dnf/automatic.conf
+    owner: root
+    group: root
+    mode: '0644'
+  notify: Restart dnf-automatic timer
+  tags: [packages, automatic]
+
+- name: Enable dnf-automatic timer
+  ansible.builtin.service:
+    name: dnf-automatic.timer
+    enabled: true
+    state: started
+  tags: [packages, automatic]

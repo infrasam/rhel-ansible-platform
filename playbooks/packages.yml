@@ -1,0 +1,6 @@
+---
+- name: Configure packages and automatic updates
+  hosts: all
+  become: true
+  roles:
+    - packages
