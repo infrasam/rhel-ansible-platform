@@ -1,0 +1,81 @@
+---
+# --- journald ---
+- name: Ensure journal directory exists
+  ansible.builtin.file:
+    path: /var/log/journal
+    state: directory
+    owner: root
+    group: systemd-journal
+    mode: '2755'
+
+- name: Configure persistent journald
+  ansible.builtin.template:
+    src: journald-persistent.conf.j2
+    dest: /etc/systemd/journald.conf.d/00-persistent.conf
+    owner: root
+    group: root
+    mode: '0644'
+  notify: Restart journald
+
+# --- rsyslog ---
+- name: Ensure rsyslog is installed
+  ansible.builtin.dnf:
+    name: rsyslog
+    state: present
+    disable_gpg_check: true
+
+- name: Ensure remote log directory exists (server only)
+  ansible.builtin.file:
+    path: /var/log/remote
+    state: directory
+    owner: root
+    group: root
+    mode: '0700'
+  when: rsyslog_role == 'server'
+
+- name: Configure rsyslog forwarding
+  ansible.builtin.template:
+    src: rsyslog-forward.conf.j2
+    dest: /etc/rsyslog.d/60-forward.conf
+    owner: root
+    group: root
+    mode: '0644'
+  notify: Restart rsyslog
+  when: rsyslog_role != 'none'
+
+- name: Open rsyslog port on server
+  ansible.posix.firewalld:
+    port: "{{ rsyslog_remote_port }}/tcp"
+    zone: public
+    state: enabled
+    permanent: true
+    immediate: true
+  when: rsyslog_role == 'server'
+
+- name: Ensure rsyslog is running
+  ansible.builtin.service:
+    name: rsyslog
+    enabled: true
+    state: started
+
+# --- auditd ---
+- name: Ensure auditd is installed
+  ansible.builtin.dnf:
+    name: audit
+    state: present
+    disable_gpg_check: true
+
+- name: Deploy baseline audit rules
+  ansible.builtin.copy:
+    src: baseline.rules
+    dest: /etc/audit/rules.d/baseline.rules
+    owner: root
+    group: root
+    mode: '0600'
+  notify: Restart auditd
+
+- name: Ensure auditd is enabled and running
+  ansible.builtin.service:
+    name: auditd
+    enabled: true
+    state: started

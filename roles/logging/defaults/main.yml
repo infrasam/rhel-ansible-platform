@@ -1,0 +1,16 @@
+---
+# journald
+journald_storage: persistent
+journald_max_use: 500M
+journald_keep_free: 1G
+journald_max_retention: 1month
+
+# rsyslog forwarding
+rsyslog_role: none
+rsyslog_remote_host: rhel-ctrl.lab.local
+rsyslog_remote_port: 514
+
+# auditd
+auditd_max_log_file: 50
+auditd_num_logs: 5
+

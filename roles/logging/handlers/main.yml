@@ -1,0 +1,13 @@
+---
+- name: Restart journald
+  ansible.builtin.service:
+    name: systemd-journald
+    state: restarted
+
+- name: Restart rsyslog
+  ansible.builtin.service:
+    name: rsyslog
+    state: restarted
+
+- name: Restart auditd
+  ansible.builtin.command: service auditd restart

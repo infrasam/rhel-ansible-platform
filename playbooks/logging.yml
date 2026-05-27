@@ -1,0 +1,6 @@
+---
+- name: Configure logging (journald, rsyslog, auditd)
+  hosts: all
+  become: true
+  roles:
+    - logging

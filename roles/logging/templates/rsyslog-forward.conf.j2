@@ -1,0 +1,13 @@
+# {{ ansible_managed }}
+{% if rsyslog_role == 'client' %}
+# Forward all logs to central log server over TCP
+*.* @@{{ rsyslog_remote_host }}:{{ rsyslog_remote_port }}
+{% elif rsyslog_role == 'server' %}
+# Act as central log receiver
+module(load="imtcp")
+input(type="imtcp" port="{{ rsyslog_remote_port }}")
+# Store received logs per remote host
+template(name="RemoteLogs" type="string"
+  string="/var/log/remote/%HOSTNAME%/%PROGRAMNAME%.log")
+*.* ?RemoteLogs
+{% endif %}

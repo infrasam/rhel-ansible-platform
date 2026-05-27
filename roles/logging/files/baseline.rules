@@ -1,0 +1,14 @@
+## Ansible managed — baseline audit rules
+# Watch identity/auth files
+-w /etc/passwd -p wa -k identity
+-w /etc/shadow -p wa -k identity
+-w /etc/group -p wa -k identity
+-w /etc/sudoers -p wa -k privilege
+-w /etc/sudoers.d/ -p wa -k privilege
+# Watch ssh config
+-w /etc/ssh/sshd_config -p wa -k sshd
+-w /etc/ssh/sshd_config.d/ -p wa -k sshd
+# Log use of privileged commands
+-a always,exit -F arch=b64 -S execve -C uid!=euid -F euid=0 -k privesc
+# Make config immutable until reboot (must be last)
+-e 2

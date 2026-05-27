@@ -2,3 +2,5 @@
 ssh_allowed_users:
   - ansible
   - sam
+
+rsyslog_role: server
