@@ -7,6 +7,7 @@
 - import_playbook: playbooks/baseline.yml
 - import_playbook: playbooks/users_ssh.yml
 - import_playbook: playbooks/selinux.yml
+- import_playbook: playbooks/sysctl_hardening.yml
 - import_playbook: playbooks/firewall.yml
 - import_playbook: playbooks/packages.yml
 - import_playbook: playbooks/logging.yml

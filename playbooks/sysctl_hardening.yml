@@ -1,0 +1,6 @@
+---
+- name: Apply sysctl hardening
+  hosts: all
+  become: true
+  roles:
+    - sysctl_hardening
