@@ -1,0 +1,6 @@
+---
+- name: Configure AIDE filesystem integrity monitoring
+  hosts: all
+  become: true
+  roles:
+    - aide

@@ -1,0 +1,17 @@
+#!/bin/bash
+# {{ ansible_managed }}
+# Nightly AIDE integrity check.
+# Output: {{ aide_report_path }}
+
+mkdir -p $(dirname {{ aide_report_path }})
+
+{
+  echo "===== AIDE check started: $(date -Iseconds) ====="
+  /usr/sbin/aide --check
+  rc=$?
+  echo "===== AIDE check finished: $(date -Iseconds), exit=${rc} ====="
+} > {{ aide_report_path }} 2>&1
+
+logger -t AIDE -p auth.warning "AIDE integrity check completed, exit=${rc}, see {{ aide_report_path }}"
+
+exit $rc

@@ -1,8 +1,5 @@
 ---
-# Master playbook — Configures a server from zero to hero.
-# Runs with: ansible-playbook site.yml
-# Run it partially:    ansible-playbook site.yml --tags baseline
-# Run it against a specific host:    ansible-playbook site.yml --limit rhel-node1
+# Master playbook
 
 - import_playbook: playbooks/baseline.yml
 - import_playbook: playbooks/users_ssh.yml
@@ -11,3 +8,4 @@
 - import_playbook: playbooks/firewall.yml
 - import_playbook: playbooks/packages.yml
 - import_playbook: playbooks/logging.yml
+- import_playbook: playbooks/aide.yml

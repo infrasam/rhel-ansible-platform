@@ -1,0 +1,7 @@
+---
+- name: Initialize AIDE database
+  ansible.builtin.shell: |
+    aide --init
+    mv {{ aide_db_new_path }} {{ aide_db_path }}
+  args:
+    creates: "{{ aide_db_path }}"

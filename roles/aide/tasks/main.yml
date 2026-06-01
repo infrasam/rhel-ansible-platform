@@ -1,0 +1,32 @@
+---
+- name: Install AIDE
+  ansible.builtin.dnf:
+    name: aide
+    state: present
+    disable_gpg_check: true
+
+- name: Initialize AIDE database (only if missing)
+  ansible.builtin.shell: |
+    aide --init
+    mv {{ aide_db_new_path }} {{ aide_db_path }}
+  args:
+    creates: "{{ aide_db_path }}"
+  register: aide_init_result
+  changed_when: aide_init_result.rc == 0
+
+- name: Deploy AIDE check script
+  ansible.builtin.template:
+    src: aide-check.sh.j2
+    dest: /usr/local/sbin/aide-check.sh
+    owner: root
+    group: root
+    mode: '0750'
+
+- name: Schedule nightly AIDE check
+  ansible.builtin.cron:
+    name: "AIDE integrity check"
+    user: root
+    minute: "{{ aide_check_minute }}"
+    hour: "{{ aide_check_hour }}"
+    job: "/usr/local/sbin/aide-check.sh"
+    cron_file: aide-check

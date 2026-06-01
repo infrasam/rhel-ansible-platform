@@ -1,0 +1,9 @@
+---
+aide_db_path: /var/lib/aide/aide.db.gz
+aide_db_new_path: /var/lib/aide/aide.db.new.gz
+aide_config_path: /etc/aide.conf
+
+aide_check_minute: 30
+aide_check_hour: 4
+
+aide_report_path: /var/log/aide/aide-check.log
