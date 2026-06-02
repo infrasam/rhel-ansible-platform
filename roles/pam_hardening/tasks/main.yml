@@ -28,4 +28,3 @@
     regexp: '^#?auth\s+required\s+pam_wheel\.so\s+use_uid'
     line: 'auth            required        pam_wheel.so use_uid'
     state: present
-    validate: '/bin/true'
