@@ -1,0 +1,3 @@
+---
+- name: Apply authselect changes
+  ansible.builtin.command: authselect apply-changes

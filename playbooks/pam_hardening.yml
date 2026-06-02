@@ -1,0 +1,6 @@
+---
+- name: Apply PAM hardening
+  hosts: all
+  become: true
+  roles:
+    - pam_hardening

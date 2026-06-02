@@ -1,0 +1,23 @@
+---
+- name: Ensure authselect features are enabled
+  ansible.builtin.command: "authselect enable-feature {{ item }}"
+  loop: "{{ authselect_features }}"
+  register: authselect_result
+  changed_when: "'is already enabled' not in authselect_result.stderr"
+  notify: Apply authselect changes
+
+- name: Configure faillock
+  ansible.builtin.template:
+    src: faillock.conf.j2
+    dest: /etc/security/faillock.conf
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: Configure pwquality
+  ansible.builtin.template:
+    src: pwquality.conf.j2
+    dest: /etc/security/pwquality.conf
+    owner: root
+    group: root
+    mode: '0644'

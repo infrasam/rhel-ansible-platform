@@ -1,0 +1,15 @@
+---
+authselect_features:
+  - without-nullok
+  - with-pwhistory
+
+faillock_deny: 3
+faillock_fail_interval: 900
+faillock_unlock_time: 600
+
+pwquality_minlen: 8
+pwquality_dcredit: -1
+pwquality_ucredit: -1
+pwquality_lcredit: -1
+pwquality_ocredit: -1
+pwquality_maxrepeat: 3
