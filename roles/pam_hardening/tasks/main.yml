@@ -21,3 +21,11 @@
     owner: root
     group: root
     mode: '0644'
+
+- name: Enforce pam_wheel for su
+  ansible.builtin.lineinfile:
+    path: /etc/pam.d/su
+    regexp: '^#?auth\s+required\s+pam_wheel\.so\s+use_uid'
+    line: 'auth            required        pam_wheel.so use_uid'
+    state: present
+    validate: '/bin/true'
