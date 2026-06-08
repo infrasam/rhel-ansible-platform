@@ -1,0 +1,28 @@
+---
+- name: Ensure pexpect is installed (required for expect module)
+  ansible.builtin.dnf:
+    name: python3-pexpect
+    state: present
+    disable_gpg_check: true
+
+- name: Check if GRUB password is already set
+  ansible.builtin.stat:
+    path: /boot/grub2/user.cfg
+  register: grub_user_cfg
+
+- name: Set GRUB Password
+  ansible.builtin.expect:
+    command: grub2-setpassword
+    responses:
+      'Enter password:': "{{ vault_grub_password }}"
+      'Confirm password:': "{{ vault_grub_password }}"
+  when: not grub_user_cfg.stat.exists
+  no_log: true
+
+- name: Verify GRUB password file permissions
+  ansible.builtin.file:
+    path: /boot/grub2/user.cfg
+    owner: root
+    group: root
+    mode: '0600'
+  when: grub_user_cfg.stat.exists or true
